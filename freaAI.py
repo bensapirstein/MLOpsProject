@@ -8,7 +8,6 @@ from sklearn.metrics import accuracy_score
 import dtreeviz
 from sklearn.tree import DecisionTreeClassifier, export_text
 import itertools
-from tqdm import tqdm
 
 ###################### Decision Tree #############
 # Src: https://towardsdatascience.com/train-a-regression-model-using-a-decision-tree-70012c22bcc1
@@ -109,7 +108,8 @@ def run_data_search(df, name=None):
 
     pairs = list(itertools.combinations(set(df) - set(['accuracy_bool']), 2))
 
-    for col1, col2 in tqdm(pairs):
+    for col1, col2 in pairs:
+        print(f'Running {col1} and {col2}')
         c1, c2 = df[col1], df[col2]
         predictors = [col1,col2]
         model, *_, X = fit_DT(df, predictors=predictors)
@@ -151,7 +151,7 @@ def feature_engineering(out2, train_x, valid_x, test_x):
 
     cols = []
     # Take slices according to explainability results
-    for x,y in tqdm(list(zip(out2["names"], out2["indicies"]))):
+    for x,y in zip(out2["names"], out2["indicies"]):
         for i in range(len(y)):
             col1 = x.split("-")[0]
             col2 = x.split("-")[1]
